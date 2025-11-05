@@ -1,4 +1,4 @@
-# main.py
+# index.py
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -10,6 +10,10 @@ def read_root():
 @app.get("/api/database")
 def health_check():
     return {"status": "good"}
+
+@app.get("/api/afgan")
+def health_check():
+    return {"afgan": "ganteng"}
 
 # This is important for Vercel
 if __name__ == "__main__":
