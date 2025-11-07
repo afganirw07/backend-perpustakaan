@@ -8,11 +8,11 @@ def read_root():
     return {"message": "Look Ma, I'm deployed!"}
 
 @app.get("/api/database")
-def health_check():
+def database_check():
     return {"status": "good"}
 
 @app.get("/api/afgan")
-def health_check():
+def afgan_check():
     return {"afgan": "ganteng"}
 
 # This is important for Vercel
