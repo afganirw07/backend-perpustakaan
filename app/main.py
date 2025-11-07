@@ -16,7 +16,7 @@ app = FastAPI(
 # root
 @app.get("/", tags=["Root"])
 def read_root():
-    return {"message": "Selamat datang di API Perpustakaan!"}
+    return {"message": "Selamat datang di API Perpustakaan"}
 
 # route book
 app.include_router(books.router, prefix="/api", tags=["Books"])
