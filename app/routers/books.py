@@ -24,3 +24,22 @@ def create_book(book: Books):
 def read_books():
     response = supabase.table("books").select("*").execute()
     return response.data
+
+# edit book
+@router.put("/books/{book_id}")
+def update_book(book_id: int, book: Books):
+    data = book.dict(exclude_unset=True)
+
+    # konversi semua datetime ke string ISO
+    for key, value in data.items():
+        if isinstance(value, datetime):
+            data[key] = value.isoformat()
+    
+    response = supabase.table("books").update(data).eq("id", book_id).execute()
+    return response.data
+
+# delete book
+@router.delete("/books/{book_id}")
+def delete_book(book_id: int):
+    response = supabase.table("books").delete().eq("id", book_id).execute()
+    return response.data
