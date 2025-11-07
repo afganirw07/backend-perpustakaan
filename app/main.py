@@ -1,5 +1,7 @@
 # index.py
 from fastapi import FastAPI
+from app.routers import books
+
 
 app = FastAPI()
 
@@ -7,13 +9,8 @@ app = FastAPI()
 def read_root():
     return {"message": "Look Ma, I'm deployed!"}
 
-@app.get("/api/database")
-def database_check():
-    return {"status": "good"}
+app.include_router(books.router)
 
-@app.get("/api/afgan")
-def afgan_check():
-    return {"afgan": "ganteng"}
 
 # This is important for Vercel
 if __name__ == "__main__":
