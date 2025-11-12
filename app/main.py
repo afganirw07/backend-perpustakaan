@@ -5,7 +5,14 @@ from app.service.auth import login_user
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
+# load env
+load_dotenv()
+
+app = FastAPI(
+    title="API Perpustakaan",
+    description="API untuk mengelola data buku di perpustakaan.",
+    version="1.0.0"
+)
 
 # cors settings
 origins = [
@@ -23,14 +30,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# load env
-load_dotenv()
-
-app = FastAPI(
-    title="API Perpustakaan",
-    description="API untuk mengelola data buku di perpustakaan.",
-    version="1.0.0"
-)
 
 # root
 @app.get("/", tags=["Root"])
