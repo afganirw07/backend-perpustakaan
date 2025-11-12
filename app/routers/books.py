@@ -1,12 +1,13 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from app.db.database import supabase
 from app.models.booksmodels import Books
 from datetime import datetime
+from app.core.security import verify_token
 
 router = APIRouter()
 
 # create new book
-@router.post("/books/create")
+@router.post("/books/create", dependencies=[Depends(verify_token)])
 def create_book(book: Books):
     data = book.dict(exclude_unset=True)
     
@@ -26,7 +27,7 @@ def read_books():
     return response.data
 
 # edit book
-@router.put("/books/{book_id}")
+@router.put("/books/{book_id}", dependencies=[Depends(verify_token)])
 def update_book(book_id: int, book: Books):
     data = book.dict(exclude_unset=True)
 
@@ -39,7 +40,7 @@ def update_book(book_id: int, book: Books):
     return response.data
 
 # delete book
-@router.delete("/books/{book_id}")
+@router.delete("/books/{book_id}", dependencies=[Depends(verify_token)])
 def delete_book(book_id: int):
     response = supabase.table("books").delete().eq("id", book_id).execute()
     return response.data
