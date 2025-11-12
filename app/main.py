@@ -11,7 +11,8 @@ app = FastAPI()
 origins = [
     "http://localhost",
     "http://localhost:3000",
-    "https://api-perpustakaan-database-5pmj4v633.vercel.app/",
+    "https://api-perpustakaan-database-5pmj4v633.vercel.app",
+    "https://api-perpustakaan-database.vercel.app",
 ]
 
 app.add_middleware(
