@@ -1,7 +1,6 @@
 # app/main.py
 from fastapi import FastAPI
 from app.routers import books, auth
-from app.service.auth import login_user
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 
