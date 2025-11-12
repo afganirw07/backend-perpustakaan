@@ -1,6 +1,7 @@
 # app/main.py
 from fastapi import FastAPI
 from app.routers import books
+from app.routers import auth
 import os
 from dotenv import load_dotenv
 
@@ -20,3 +21,6 @@ def read_root():
 
 # route book
 app.include_router(books.router, prefix="/api", tags=["Books"])
+
+# route user
+app.include_router(auth.router, prefix="/api", tags=["Users"])
