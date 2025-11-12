@@ -10,7 +10,7 @@ class Users(SQLModel, table=True):
     full_name: Optional[str] = Field(default=None, description="Nama lengkap pengguna")
     email: str = Field(index=True, unique=True, description="Alamat email pengguna")
     password: str = Field(description="Password yang sudah di-hash")
-    role: str = Field(default="user", description="Peran pengguna (user, karyawan, superadmin)")
+    role_user: str = Field(default="user", description="Peran pengguna (user, karyawan, superadmin)")
     
     # metadata sistem
     created_at: datetime = Field(default_factory=datetime.utcnow, description="Tanggal pengguna ditambahkan ke sistem")
