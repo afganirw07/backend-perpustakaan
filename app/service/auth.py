@@ -1,16 +1,24 @@
 from app.db.database import supabase
-from app.models.usersmodels import Users
 from datetime import datetime
-from app.core.security import verify_token
-from fastapi import APIRouter, Depends
-import uuid
+from fastapi import APIRouter, HTTPException
+from app.core.security import SECRET_ACCESS_TOKEN
 
 router = APIRouter()
 
 # user login
-@router.get("/users/login")
-def login_user(email: str, password: str):
-    user = supabase.table("users").select("*").eq("email", email).execute()
-    if user and user[0]["password"] == password:
-        return {"message": "Login successful"}
-    return {"message": "Invalid email or password"}, 401
+@router.post("/auth/login")
+def login_user(data: dict):
+    email = data.get("email")
+    password = data.get("password")
+
+    # Ambil user dari supabase
+    user = supabase.table("users").select("*").eq("email", email).execute().data
+    if not user:
+        raise HTTPException(status_code=400, detail="User not found")
+
+    # verifikasi password (pastikan sudah di-hash sebelumnya)
+    if password != user[0]["password"]:
+        raise HTTPException(status_code=400, detail="Password salah")
+
+    # return token buat dipakai di frontend
+    return {"token": SECRET_ACCESS_TOKEN, "role": user[0]["role"], "email": email}
