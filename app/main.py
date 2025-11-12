@@ -42,5 +42,4 @@ app.include_router(books.router, prefix="/api", tags=["Books"])
 # route user
 app.include_router(auth.router, prefix="/api", tags=["Users"])
 
-# route login
-app.include_router(login_user, prefix="/api", tags=["Login"])
+
