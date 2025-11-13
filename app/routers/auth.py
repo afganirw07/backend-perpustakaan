@@ -9,7 +9,7 @@ import bcrypt
 router = APIRouter()
 
 # CREATE USER 
-@router.post("/users/create", dependencies=[Depends(verify_token)])
+@router.post("/users/create")
 def create_user(user: Users):
     try:
         auth_response = supabase.auth.sign_up({
@@ -20,17 +20,16 @@ def create_user(user: Users):
         if not auth_user:
             raise HTTPException(status_code=400, detail="Gagal membuat user di Supabase Auth")
 
-        data = user.dict(exclude_unset=True)
-        data["id"] = str(uuid.uuid4())
-        data["full_name"] = user.full_name
-        data["email"] = auth_user.email
-        data["password"] = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-        data["role_user"] = user.role_user
-        data["created_at"] = datetime.utcnow().isoformat()
-        data["updated_at"] = datetime.utcnow().isoformat()
+        data = {
+            "full_name": user.full_name,
+            "email": user.email,
+            "role_user": user.role_user,
+            "password": bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8'),
+            "created_at": datetime.utcnow().isoformat(),
+            "updated_at": datetime.utcnow().isoformat()
+        }
 
         supabase.table("users").insert(data).execute()
-
         return {"message": "User created successfully. Please verify your email."}
 
     except Exception as e:
