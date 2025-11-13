@@ -4,6 +4,7 @@ from app.models.usersmodels import Users
 from datetime import datetime
 from app.core.security import verify_token
 import uuid
+import bcrypt
 
 router = APIRouter()
 
@@ -23,7 +24,7 @@ def create_user(user: Users):
         data["id"] = str(uuid.uuid4())
         data["auth_id"] = auth_user.id
         data["email"] = auth_user.email
-        data["password"] = user.password
+        data["password"] = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
         data["role_user"] = user.role_user
         data["created_at"] = datetime.utcnow().isoformat()
         data["updated_at"] = datetime.utcnow().isoformat()
