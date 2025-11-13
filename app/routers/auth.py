@@ -22,7 +22,7 @@ def create_user(user: Users):
 
         data = user.dict(exclude_unset=True)
         data["id"] = str(uuid.uuid4())
-        data["auth_id"] = auth_user.id
+        data["full_name"] = user.full_name
         data["email"] = auth_user.email
         data["password"] = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
         data["role_user"] = user.role_user
