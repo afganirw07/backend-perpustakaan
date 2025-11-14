@@ -19,6 +19,7 @@ origins = [
     "http://localhost:3000",
     "https://api-perpustakaan-database-5pmj4v633.vercel.app",
     "https://api-perpustakaan-database.vercel.app",
+    "http://127.0.0.1:8000",
 ]
 
 app.add_middleware(

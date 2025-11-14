@@ -5,6 +5,7 @@ from datetime import datetime
 from app.core.security import verify_token
 import uuid
 import bcrypt
+from app.utils.login import send_login_email
 
 router = APIRouter()
 
@@ -50,6 +51,8 @@ def login_user(data: dict):
     # if none
     if not response.user:
         raise HTTPException(status_code=401, detail="Invalid email or password")
+    
+    send_login_email(email)
 
     return {
         "access_token": response.session.access_token,
