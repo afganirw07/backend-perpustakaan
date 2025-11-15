@@ -6,6 +6,7 @@ from app.core.security import verify_token
 import uuid
 import bcrypt
 from app.utils.login import send_login_email
+from fastapi import BackgroundTasks
 
 router = APIRouter()
 
@@ -39,7 +40,7 @@ def create_user(user: Users):
 
 # LOGIN USER
 @router.post("/auth/login")
-def login_user(data: dict):
+def login_user(data: dict, background_tasks: BackgroundTasks):
     email = data.get("email")
     password = data.get("password")
 
@@ -52,7 +53,7 @@ def login_user(data: dict):
     if not response.user:
         raise HTTPException(status_code=401, detail="Invalid email or password")
     
-    send_login_email(email)
+    background_tasks.add_task(send_login_email, email)
 
     return {
         "access_token": response.session.access_token,

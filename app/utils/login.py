@@ -2,6 +2,9 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from app.core.config import EMAIL_ADDRESS, PASSWORD_SECRET_KEY
+from datetime import datetime
+
+
 
 
 def send_login_email(receiver_email: str):
