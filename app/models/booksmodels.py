@@ -15,6 +15,7 @@ class Books(SQLModel, table=True):
     category: Optional[str] = Field(default=None, description="Kategori atau genre buku")
     description: Optional[str] = Field(default=None, description="Deskripsi singkat buku")
     image: Optional[str] = Field(default=None, description="URL gambar sampul buku")
+    stars: Optional[int] = Field(default=None, description="Rating buku")
     
     # stock and status
     stock: int = Field(default=0, description="Jumlah stok buku tersedia")
