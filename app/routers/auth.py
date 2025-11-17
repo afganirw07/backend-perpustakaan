@@ -44,21 +44,36 @@ def login_user(data: dict, background_tasks: BackgroundTasks):
     email = data.get("email")
     password = data.get("password")
 
+    # Login Supabase Auth
     response = supabase.auth.sign_in_with_password({
         "email": email,
         "password": password
     })
 
-    # if none
     if not response.user:
         raise HTTPException(status_code=401, detail="Invalid email or password")
-    
+
+    # Ambil data user dari tabel users
+    user_record = supabase.table("users") \
+        .select("id, full_name, role_user") \
+        .eq("email", email) \
+        .single() \
+        .execute()
+
+    if not user_record.data:
+        raise HTTPException(status_code=404, detail="User tidak ditemukan di tabel users")
+
+    # Kirim email, optional
     background_tasks.add_task(send_login_email, email)
 
     return {
         "access_token": response.session.access_token,
         "refresh_token": response.session.refresh_token,
-        "user": response.user.email,
+
+        "user_id": user_record.data["id"],     
+        "full_name": user_record.data["full_name"],
+        "role_user": user_record.data["role_user"],
+        "email": email,
     }
 
 
