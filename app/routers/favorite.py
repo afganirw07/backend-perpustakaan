@@ -34,7 +34,11 @@ def get_user_favorites(user_id: str):
     return books
 
 
-@router.delete("/favorite/{favorite_id}")
-def delete_favorite(favorite_id: str):
-    response = supabase.table("favorite").delete().eq("id", favorite_id).execute()
+# delete favorite
+@router.delete("/favorite/{user_id}/{book_id}")
+def delete_favorite(user_id: str, book_id: int):
+    response = supabase.table("favorite").delete() \
+        .eq("user_id", user_id) \
+        .eq("book_id", book_id) \
+        .execute()
     return response.data
