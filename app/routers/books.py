@@ -26,6 +26,12 @@ def read_books():
     response = supabase.table("books").select("*").execute()
     return response.data
 
+# read by params
+@router.get("/books/{book_id}")
+def read_book(book_id: int):
+    response = supabase.table("books").select("*").eq("id", book_id).execute()
+    return response.data
+
 # edit book
 @router.put("/books/{book_id}", dependencies=[Depends(verify_token)])
 def update_book(book_id: int, book: Books):

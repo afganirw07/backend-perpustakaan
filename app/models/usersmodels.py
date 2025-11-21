@@ -16,3 +16,8 @@ class Users(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.utcnow, description="Tanggal pengguna ditambahkan ke sistem")
     updated_at: Optional[datetime] = Field(default_factory=datetime.utcnow, description="Tanggal terakhir pengguna diupdate")
     
+    
+class UserUpdate(SQLModel):
+    full_name: Optional[str] = None
+    email: Optional[str] = None
+    updated_at: Optional[datetime] = None
