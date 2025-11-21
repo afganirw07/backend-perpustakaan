@@ -38,13 +38,19 @@ def create_peminjaman(request: BorrowRequest):
 # read peminjaman
 @router.get("/peminjaman/{user_id}")
 def read_peminjaman(user_id: str):
-    response = supabase.table("borrow_requests").select("*").eq("user_id", user_id).execute()
+    response = (
+    supabase.table("borrow_requests")
+    .select("*, books(title, author, description, image)")
+    .eq("user_id", user_id)
+    .execute()
+)
+
     return response.data
 
 # read allpeminjaman
 @router.get("/peminjaman")
 def read_peminjaman():
-    response = supabase.table("borrow_requests").select("*").execute()
+    response = supabase.table("borrow_requests").select("*, books(title, author, description, image)").execute()
     return response.data
 
 
