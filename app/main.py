@@ -1,6 +1,6 @@
 # app/main.py
 from fastapi import FastAPI
-from app.routers import books, auth, favorite, peminjaman
+from app.routers import books, auth, favorite, peminjaman, ulasan
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -50,5 +50,8 @@ app.include_router(favorite.router, prefix="/api", tags=["Favorites"])
 
 # route peminjaman
 app.include_router(peminjaman.router, prefix="/api", tags=["Peminjaman"])
+
+# route ulasan
+app.include_router(ulasan.router, prefix="/api", tags=["Ulasan"])
 
 

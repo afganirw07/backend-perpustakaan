@@ -58,14 +58,14 @@ def read_peminjaman():
 # edit status
 @router.put("/peminjaman/status/{id}")
 def update_status(id: str, status: str):
-    allowed_status = ["pending", "acc", "ditolak", "dikembalikan"]
+    allowed_status = ["pending", "disetuju", "ditolak", "dikembalikan"]
 
     if status not in allowed_status:
         return {"success": False, "message": "Status tidak valid"}
 
     response = (
         supabase.table("borrow_requests")
-        .update({"status": status, "updated_at": datetime.utcnow()})
+        .update({"status": status, "updated_at": datetime.utcnow().isoformat()})
         .eq("id", id)
         .execute()
     )
