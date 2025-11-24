@@ -2,6 +2,8 @@ from fastapi import APIRouter
 from app.db.database import supabase
 from app.models.favoritemodels import favorite as FavoriteCreate
 from datetime import datetime
+import json
+from app.core.redis import redis_client
 
 router = APIRouter()
 
@@ -24,6 +26,7 @@ def read_favorite(user_id: str):
 
 @router.get("/favorite/books/{user_id}")
 def get_user_favorites(user_id: str):
+    
     # Ambil semua favorite user
     favs = supabase.table("favorite").select("*").eq("user_id", user_id).execute().data
     
@@ -31,6 +34,7 @@ def get_user_favorites(user_id: str):
     book_ids = [f['book_id'] for f in favs]
     books = supabase.table("books").select("*").in_("id", book_ids).execute().data
     
+
     return books
 
 
@@ -41,4 +45,6 @@ def delete_favorite(user_id: str, book_id: int):
         .eq("user_id", user_id) \
         .eq("book_id", book_id) \
         .execute()
+        
+
     return response.data

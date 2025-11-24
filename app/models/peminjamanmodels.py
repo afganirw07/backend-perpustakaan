@@ -11,3 +11,4 @@ class BorrowRequest(BaseModel):
     tanggal_peminjaman: Optional[date] = None
     tanggal_pengembalian: Optional[date] = None
     status: Optional[str] = "pending"   
+    alasan: Optional[str] = None

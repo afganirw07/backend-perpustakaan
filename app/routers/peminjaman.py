@@ -3,6 +3,10 @@ from app.db.database import supabase
 from app.models.peminjamanmodels import BorrowRequest
 from datetime import datetime, date
 import uuid
+from fastapi import Query, BackgroundTasks
+from typing import Optional
+from app.utils.peminjaman import send_peminjaman_status_email
+
 
 router = APIRouter()
 
@@ -57,18 +61,44 @@ def read_peminjaman():
 
 # edit status
 @router.put("/peminjaman/status/{id}")
-def update_status(id: str, status: str):
+def update_status(id: str, status: str, background_tasks: BackgroundTasks, alasan: Optional[str] = Query(None, description="Alasan penolakan jika status 'ditolak'")):
     allowed_status = ["pending", "disetuju", "ditolak", "dikembalikan"]
 
     if status not in allowed_status:
         return {"success": False, "message": "Status tidak valid"}
 
+    update_data = {"status": status, "updated_at": datetime.utcnow().isoformat()}    
+    if status == "ditolak":
+        update_data["alasan"] = alasan
+
     response = (
         supabase.table("borrow_requests")
-        .update({"status": status, "updated_at": datetime.utcnow().isoformat()})
+        .update(update_data)
         .eq("id", id)
         .execute()
+
     )
+ 
+    if response.data and (status == "disetuju" or status == "ditolak"):
+        user_id = response.data[0].get("user_id")
+        if user_id:
+            user_record = supabase.table("users").select("email").eq("id", user_id).single().execute()
+            if user_record.data:
+                receiver_email = user_record.data.get("email")
+                if status == "disetuju":
+                    background_tasks.add_task(
+                        send_peminjaman_status_email,
+                        receiver_email=receiver_email,
+                        status=status
+                    )
+                elif status == "ditolak":
+                    background_tasks.add_task(
+                        send_peminjaman_status_email,
+                        receiver_email=receiver_email,
+                        status=status,
+                        alasan=alasan
+                    )
+
 
     return {
         "success": True,
