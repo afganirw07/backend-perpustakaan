@@ -17,10 +17,10 @@ def send_peminjaman_status_email(receiver_email: str, status: str, alasan: str =
     msg["To"] = receiver_email
 
     status_color = {
-        "disetujui": "#059669",  # Green
-        "ditolak": "#DC2626",    # Red
-        "pending": "#F59E0B",   # Amber
-        "dikembalikan": "#4B5563" # Gray
+        "disetujui": "#059669",  
+        "ditolak": "#DC2626",    
+        "pending": "#F59E0B",  
+        "dikembalikan": "#4B5563" 
     }.get(status, "#1f2937")
 
     alasan_html = ""

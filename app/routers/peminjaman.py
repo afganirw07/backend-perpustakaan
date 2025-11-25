@@ -78,7 +78,7 @@ def update_status(id: str, status: str, background_tasks: BackgroundTasks, alasa
         .execute()
 
     )
- 
+
     if response.data and (status == "disetuju" or status == "ditolak"):
         user_id = response.data[0].get("user_id")
         if user_id:
