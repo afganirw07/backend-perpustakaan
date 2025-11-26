@@ -85,7 +85,7 @@ def update_book(book_id: int, book: Books):
 # delete book
 @router.delete("/books/{book_id}", dependencies=[Depends(verify_token)])
 def delete_book(book_id: int):
-    cache_key = f"book:{book_id}"
+    # cache_key = f"book:{book_id}"
 
     response = supabase.table("books").delete().eq("id", book_id).execute()
 
