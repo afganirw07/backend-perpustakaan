@@ -20,4 +20,5 @@ class Users(SQLModel, table=True):
 class UserUpdate(SQLModel):
     full_name: Optional[str] = None
     email: Optional[str] = None
+    role_user: Optional[str] = None
     updated_at: Optional[datetime] = None
