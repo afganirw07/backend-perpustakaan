@@ -2,8 +2,8 @@ from fastapi import APIRouter
 from app.db.database import supabase
 from app.models.favoritemodels import favorite as FavoriteCreate
 from datetime import datetime
-import json
-from app.core.redis import redis_client
+# import json
+# from app.core.redis import redis_client
 
 router = APIRouter()
 
